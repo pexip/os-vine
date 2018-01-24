@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ ! -f /usr/bin/convert ]
+then
+	echo "This repack script requires the convert program."
+	echo "Please install the graphicsmagick-imagemagick-compat package and try again."
+	exit 1
+fi
+
+rm -rf vine.egg-info/
+convert -verbose -strip ./docs/images/celery_128.png +profile "icc" ./docs/images/celery_128.png
+convert -verbose ./docs/images/favicon.ico +profile "icc" ./docs/images/favicon.ico

@@ -1,0 +1,5 @@
+# please also check http://pypi.debian.net/vine/watch
+version=3
+opts=uversionmangle=s/(rc|a|b|c)/~$1/,dversionmangle=s/\+dfsg$//,repacksuffix=+dfsg,pgpsigurlmangle=s/$/.asc/ \
+https://pypi.debian.net/vine/vine-(.+)\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz))) \
+debian sh debian/repack.stub

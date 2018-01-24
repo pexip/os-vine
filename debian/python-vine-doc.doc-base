@@ -1,0 +1,10 @@
+Document: vine
+Title: vine documentation
+Author: Ask Solem & contributors
+Abstract: This document describes how to use vine Python promises
+Section: Programming/Python
+
+Format: HTML
+Index: /usr/share/doc/python-vine/html/index.html
+Files: /usr/share/doc/python-vine/html/*.html          
+
