@@ -1,3 +1,9 @@
+vine (1.1.4+dfsg-2pexip1) pexip; urgency=medium
+
+  * Prepare Pexip packaging
+
+ -- John-Mark Bell <jmb@pexip.com>  Wed, 08 Jul 2020 17:03:03 +0000
+
 vine (1.1.4+dfsg-2) unstable; urgency=medium
 
   * Fix file-contains-trailing-whitespace in control and changelog
