@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 import os
 import re
 import sys
@@ -8,9 +7,6 @@ import codecs
 import setuptools
 import setuptools.command.test
 
-if sys.version_info < (2, 7):
-    raise Exception('vine requires Python 2.7 or higher.')
-
 NAME = 'vine'
 
 # -*- Classifiers -*-
@@ -18,12 +14,11 @@ NAME = 'vine'
 classes = """
     Development Status :: 5 - Production/Stable
     Programming Language :: Python
-    Programming Language :: Python :: 2
-    Programming Language :: Python :: 2.7
     Programming Language :: Python :: 3
-    Programming Language :: Python :: 3.4
-    Programming Language :: Python :: 3.5
     Programming Language :: Python :: 3.6
+    Programming Language :: Python :: 3.7
+    Programming Language :: Python :: 3.8
+    Programming Language :: Python :: 3 :: Only
     Programming Language :: Python :: Implementation :: CPython
     Programming Language :: Python :: Implementation :: PyPy
     License :: OSI Approved :: BSD License
@@ -80,7 +75,7 @@ def reqs(f):
 if os.path.exists('README.rst'):
     long_description = codecs.open('README.rst', 'r', 'utf-8').read()
 else:
-    long_description = 'See http://pypi.python.org/pypi/vine'
+    long_description = 'See https://pypi.org/project/vine/'
 
 # -*- Entry Points -*- #
 
@@ -111,6 +106,7 @@ setuptools.setup(
     platforms=['any'],
     classifiers=classifiers,
     license='BSD',
+    python_requires=">=3.6",
     install_requires=[],
     tests_require=reqs('test.txt'),
     cmdclass={'test': pytest},
