@@ -1,11 +1,10 @@
-from __future__ import absolute_import, unicode_literals
-
 import pytest
 import sys
 import traceback
 
 from collections import deque
 from struct import pack, unpack
+import weakref
 
 from case import Mock
 
@@ -19,7 +18,7 @@ class test_promise:
 
         _pending = deque()
 
-        class Protocol(object):
+        class Protocol:
 
             def __init__(self):
                 self.buffer = []
@@ -58,7 +57,29 @@ class test_promise:
         a = promise()
         a.then(callback)
         a(42)
-        callback.assert_called_with(42)
+        callback.assert_called_once_with(42)
+
+    def test_signal_callback_kwargs(self):
+        callback = Mock(name='callback')
+        a = promise(callback=callback)
+        a(42)
+        callback.assert_called_once_with(42)
+
+    def test_call_ignore_result(self):
+        fun = Mock(name='fun')
+        callback = Mock(name='callback')
+        a = promise(fun=fun, ignore_result=True)
+        a.then(callback)
+        a()
+        fun.assert_called_once_with()
+        callback.assert_called_once_with()
+
+    def test_call_ignore_result_callback_kwarg(self):
+        fun = Mock(name='fun')
+        callback = Mock(name='callback')
+        a = promise(fun=fun, ignore_result=True, callback=callback)
+        a()
+        callback.assert_called_once_with()
 
     def test_chained(self):
 
@@ -323,3 +344,26 @@ class test_promise:
         d = promise(Mock(name='d'), on_error=de)
         p2.then(d)
         de.fun.assert_called_with(exc)
+
+    def test_weak_reference_unbound(self):
+        def f(x):
+            return x ** 2
+
+        promise_f = promise(f, weak=True)
+
+        assert isinstance(promise_f.fun, weakref.ref)
+        assert promise_f(2) == 4
+
+    def test_weak_reference_bound(self):
+        class Example:
+            def __init__(self, y):
+                self.y = y
+
+            def f(self, x):
+                return self.y + x ** 2
+
+        example = Example(5)
+        promise_f = promise(example.f, weak=True)
+
+        assert isinstance(promise_f.fun, weakref.ref)
+        assert promise_f(2) == 9

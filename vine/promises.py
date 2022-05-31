@@ -1,20 +1,18 @@
 """Promise implementation."""
-from __future__ import absolute_import, unicode_literals
-
 import sys
 
 from collections import deque
-from weakref import ref
+import inspect
+from weakref import ref, WeakMethod
 
 from .abstract import Thenable
-from .five import python_2_unicode_compatible, reraise
+from .utils import reraise
 
 __all__ = ['promise']
 
 
 @Thenable.register
-@python_2_unicode_compatible
-class promise(object):
+class promise:
     """Promise of future evaluation.
 
     This is a special implementation of promises in that it can
@@ -26,7 +24,6 @@ class promise(object):
 
     .. code-block:: python
 
-        >>> from __future__ import print_statement  # noqa
         >>> p = promise()
         >>> p.then(promise(print, ('OK',)))  # noqa
         >>> p.on_error = promise(print, ('ERROR',))  # noqa
@@ -46,7 +43,6 @@ class promise(object):
         >>> p(30)
 
     Example:
-
     .. code-block:: python
 
         from vine import promise, wrap
@@ -80,14 +76,16 @@ class promise(object):
     if not hasattr(sys, 'pypy_version_info'):  # pragma: no cover
         __slots__ = (
             'fun', 'args', 'kwargs', 'ready', 'failed',
-            'value', 'reason', '_svpending', '_lvpending',
+            'value', 'ignore_result', 'reason', '_svpending', '_lvpending',
             'on_error', 'cancelled', 'weak', '__weakref__',
         )
 
     def __init__(self, fun=None, args=None, kwargs=None,
-                 callback=None, on_error=None, weak=False):
+                 callback=None, on_error=None, weak=False,
+                 ignore_result=False):
         self.weak = weak
-        self.fun = ref(fun) if self.weak else fun
+        self.ignore_result = ignore_result
+        self.fun = self._get_fun_or_weakref(fun=fun, weak=weak)
         self.args = args or ()
         self.kwargs = kwargs or {}
         self.ready = False
@@ -109,9 +107,23 @@ class promise(object):
         if self.fun:
             assert self.fun and callable(fun)
 
+    @staticmethod
+    def _get_fun_or_weakref(fun, weak):
+        """Return the callable or a weak reference.
+
+        Handles both bound and unbound methods.
+        """
+        if not weak:
+            return fun
+
+        if inspect.ismethod(fun):
+            return WeakMethod(fun)
+        else:
+            return ref(fun)
+
     def __repr__(self):
         return ('<{0} --> {1!r}>' if self.fun else '<{0}>').format(
-            '{0}@0x{1:x}'.format(type(self).__name__, id(self)), self.fun,
+            f'{type(self).__name__}@0x{id(self):x}', self.fun,
         )
 
     def cancel(self):
@@ -137,8 +149,13 @@ class promise(object):
         fun = self._fun_is_alive(self.fun)
         if fun is not None:
             try:
-                retval = fun(*final_args, **final_kwargs)
-                self.value = (ca, ck) = (retval,), {}
+                if self.ignore_result:
+                    fun(*final_args, **final_kwargs)
+                    ca = ()
+                    ck = {}
+                else:
+                    retval = fun(*final_args, **final_kwargs)
+                    self.value = (ca, ck) = (retval,), {}
             except Exception:
                 return self.throw()
         else:
