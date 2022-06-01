@@ -5,6 +5,5 @@ Abstract: This document describes how to use vine Python promises
 Section: Programming/Python
 
 Format: HTML
-Index: /usr/share/doc/python-vine/html/index.html
-Files: /usr/share/doc/python-vine/html/*.html          
-
+Index: /usr/share/doc/python3-vine/html/index.html
+Files: /usr/share/doc/python3-vine/html/*.html

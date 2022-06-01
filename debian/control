@@ -1,52 +1,34 @@
 Source: vine
 Maintainer: Pexip AS <packaging@pexip.com>
-XSBC-Pexip-Original-Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
-XSBC-Pexip-Original-Uploaders: Christopher Hoskin <mans0954@debian.org>
+XSBC-Pexip-Original-Maintainer: Debian Python Team <team+python@tracker.debian.org>
+XSBC-Pexip-Original-Uploaders:
+ Christopher Hoskin <mans0954@debian.org>,
 Section: python
 Priority: optional
-Build-Depends: dh-python, python3-setuptools, python3-all, debhelper (>= 11),
- python3-sphinx, python3-sphinx-celery, python3-pytest, python3-case,
- python-all, python-setuptools, python-pytest, python-case
-Build-Conflicts: python-sphinx
-Standards-Version: 4.1.3
+Build-Depends:
+ debhelper-compat (= 12),
+ dh-python,
+ python3-all,
+ python3-case,
+ python3-pytest,
+ python3-setuptools,
+ python3-sphinx,
+ python3-sphinx-celery,
+Build-Conflicts:
+ python-sphinx,
+Standards-Version: 4.4.1
 Homepage: https://github.com/celery/vine
-Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/vine.git
-Vcs-Browser: https://anonscm.debian.org/git/python-modules/packages/vine.git
+Vcs-Git: https://salsa.debian.org/python-team/packages/vine.git
+Vcs-Browser: https://salsa.debian.org/python-team/packages/vine
 XS-Pexip-Upstream: http://deb.debian.org/debian/ bullseye
-
-Package: python-vine
-Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}
-Description: Python promises (Python 2 version)
- A Python implementation of the promise pattern for asynchronous programming.
- .
- This is a special implementation of promises in that it can be used both for
- "promise of a value" and lazy evaluation. The biggest upside for this is that
- everything in a promise can also be a promise, e.g. filters, callbacks and
- errbacks can all be promises.
- .
- This package contains the Python 2 version of the library.
-
-
-
-Package: python3-vine
-Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}
-Description: Python promises (Python 3 version)
- A Python implementation of the promise pattern for asynchronous programming.
- .
- This is a special implementation of promises in that it can be used both for
- "promise of a value" and lazy evaluation. The biggest upside for this is that
- everything in a promise can also be a promise, e.g. filters, callbacks and
- errbacks can all be promises.
- .
- This package contains the Python 3 version of the library.
-
 
 Package: python-vine-doc
 Architecture: all
 Section: doc
-Depends: ${sphinxdoc:Depends}, ${misc:Depends}
+Depends:
+ ${misc:Depends},
+ ${sphinxdoc:Depends},
+Multi-Arch: foreign
 Description: vine Python promises documentation
  A Python implementation of the promise pattern for asynchronous programming.
  .
@@ -57,3 +39,20 @@ Description: vine Python promises documentation
  .
  This is the documentation package.
 
+Package: python3-vine
+Architecture: all
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+Breaks:
+ python3-celery (<< 5.0),
+ python3-kombu (<< 5.0),
+Description: Python promises (Python 3 version)
+ A Python implementation of the promise pattern for asynchronous programming.
+ .
+ This is a special implementation of promises in that it can be used both for
+ "promise of a value" and lazy evaluation. The biggest upside for this is that
+ everything in a promise can also be a promise, e.g. filters, callbacks and
+ errbacks can all be promises.
+ .
+ This package contains the Python 3 version of the library.

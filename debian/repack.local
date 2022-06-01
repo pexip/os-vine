@@ -3,7 +3,7 @@
 if [ ! -f /usr/bin/convert ]
 then
 	echo "This repack script requires the convert program."
-	echo "Please install the graphicsmagick-imagemagick-compat package and try again."
+	echo "Please install the imagemagick package and try again."
 	exit 1
 fi
 
