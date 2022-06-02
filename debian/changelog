@@ -1,3 +1,9 @@
+vine (5.0.0+dfsg-2pexip1) pexip; urgency=medium
+
+  * Initial bullseye build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 02 Jun 2022 14:43:02 +0100
+
 vine (5.0.0+dfsg-2) unstable; urgency=medium
 
   * Team upload.
