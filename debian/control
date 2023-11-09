@@ -20,7 +20,7 @@ Standards-Version: 4.4.1
 Homepage: https://github.com/celery/vine
 Vcs-Git: https://salsa.debian.org/python-team/packages/vine.git
 Vcs-Browser: https://salsa.debian.org/python-team/packages/vine
-XS-Pexip-Upstream: http://deb.debian.org/debian/ bullseye
+XS-Pexip-Upstream: http://deb.debian.org/debian/ bookworm
 
 Package: python-vine-doc
 Architecture: all
