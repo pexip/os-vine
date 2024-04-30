@@ -1,3 +1,12 @@
+vine (5.1.0+dfsg-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream release.
+  * Cherry-pick from upstream:
+    - tests: Replace deprecated setup method.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 30 Apr 2024 17:39:53 +0100
+
 vine (5.0.0+dfsg-3) unstable; urgency=medium
 
   [ Debian Janitor ]

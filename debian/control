@@ -8,7 +8,6 @@ Build-Depends:
  debhelper-compat (= 13),
  dh-python,
  python3-all,
- python3-case,
  python3-pytest,
  python3-setuptools,
  python3-sphinx,
