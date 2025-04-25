@@ -1,8 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+import codecs
 import os
 import re
 import sys
-import codecs
 
 import setuptools
 import setuptools.command.test
@@ -15,9 +15,12 @@ classes = """
     Development Status :: 5 - Production/Stable
     Programming Language :: Python
     Programming Language :: Python :: 3
-    Programming Language :: Python :: 3.6
     Programming Language :: Python :: 3.7
     Programming Language :: Python :: 3.8
+    Programming Language :: Python :: 3.9
+    Programming Language :: Python :: 3.10
+    Programming Language :: Python :: 3.11
+    Programming Language :: Python :: 3.12
     Programming Language :: Python :: 3 :: Only
     Programming Language :: Python :: Implementation :: CPython
     Programming Language :: Python :: Implementation :: PyPy
@@ -41,6 +44,7 @@ def add_default(m):
 def add_doc(m):
     return (('doc', m.groups()[0]),)
 
+
 pats = {re_meta: add_default,
         re_doc: add_doc}
 here = os.path.abspath(os.path.dirname(__file__))
@@ -62,15 +66,16 @@ is_jython = sys.platform.startswith('java')
 is_pypy = hasattr(sys, 'pypy_version_info')
 
 
-def strip_comments(l):
-    return l.split('#', 1)[0].strip()
+def strip_comments(line):
+    return line.split('#', 1)[0].strip()
 
 
 def reqs(f):
-    return filter(None, [strip_comments(l) for l in open(
-        os.path.join(os.getcwd(), 'requirements', f)).readlines()])
+    with open(os.path.join(os.getcwd(), "requirements", f)) as fp:
+        return [r for r in (strip_comments(line) for line in fp) if r]
 
 # -*- Long Description -*-
+
 
 if os.path.exists('README.rst'):
     long_description = codecs.open('README.rst', 'r', 'utf-8').read()
@@ -86,12 +91,13 @@ class pytest(setuptools.command.test.test):
     user_options = [('pytest-args=', 'a', 'Arguments to pass to py.test')]
 
     def initialize_options(self):
-        setuptools.command.test.test.initialize_options(self)
+        super().initialize_options()
         self.pytest_args = []
 
     def run_tests(self):
         import pytest
         sys.exit(pytest.main(self.pytest_args))
+
 
 setuptools.setup(
     name=NAME,
