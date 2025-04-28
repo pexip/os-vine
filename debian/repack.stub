@@ -84,7 +84,7 @@ fi
 
 if [ ! -f "$REPACK_SH" ]; then
     echo "Couldn't find a repack.sh. please put it in your PATH, put it at ../../scripts/repack.sh, or put it somewhere else and set the REPACK_SH variable"
-    echo "You can get it from https://anonscm.debian.org/cgit/pkg-perl/packages/pkg-perl-tools.git/plain/scripts/repack.sh"
+    echo "You can get it from https://salsa.debian.org/perl-team/modules/packages/pkg-perl-tools/-/raw/master/scripts/repack.sh"
     exit 1
 fi
 

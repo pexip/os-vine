@@ -1,0 +1,22 @@
+name: CI
+on: [pull_request, push]
+jobs:
+
+  #################### Unittests ####################
+  unittest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8,3.9,"3.10","3.12"]
+    steps:
+      - name: Check out code from GitHub
+        uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        id: python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install --upgrade pip setuptools wheel tox
+      - name: Run unittest
+        run: tox -v -e ${{ matrix.python-version }}-unit -- -v
